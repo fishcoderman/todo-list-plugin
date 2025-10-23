@@ -1,0 +1,197 @@
+{
+  "name": "todo-list-plugin",
+  "displayName": "TODO List Manager",
+  "description": "一个美观且高效的 VSCode 待办事项管理插件",
+  "version": "0.1.0",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "todo",
+    "task",
+    "productivity",
+    "task management"
+  ],
+  "activationEvents": [
+    "onView:todoTreeView"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "todo-container",
+          "title": "TODO List",
+          "icon": "resources/icons/todo-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "todo-container": [
+        {
+          "id": "todoTreeView",
+          "name": "Tasks"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "todo.addTodo",
+        "title": "Add TODO",
+        "icon": "$(add)"
+      },
+      {
+        "command": "todo.editTodo",
+        "title": "Edit TODO",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "todo.deleteTodo",
+        "title": "Delete TODO",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "todo.toggleStatus",
+        "title": "Toggle Status",
+        "icon": "$(check)"
+      },
+      {
+        "command": "todo.showDetails",
+        "title": "Show Details",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "todo.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "todo.clearCompleted",
+        "title": "Clear Completed",
+        "icon": "$(clear-all)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "todo.addTodo",
+          "when": "view == todoTreeView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "todo.refresh",
+          "when": "view == todoTreeView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "todo.clearCompleted",
+          "when": "view == todoTreeView",
+          "group": "navigation@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "todo.showDetails",
+          "when": "view == todoTreeView && viewItem == todoItem",
+          "group": "inline@1"
+        },
+        {
+          "command": "todo.toggleStatus",
+          "when": "view == todoTreeView && viewItem == todoItem",
+          "group": "inline@2"
+        },
+        {
+          "command": "todo.editTodo",
+          "when": "view == todoTreeView && viewItem == todoItem",
+          "group": "1_modify@1"
+        },
+        {
+          "command": "todo.deleteTodo",
+          "when": "view == todoTreeView && viewItem == todoItem",
+          "group": "2_delete@1"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "todo.addTodo",
+        "key": "ctrl+shift+t",
+        "mac": "cmd+shift+t"
+      }
+    ],
+    "configuration": {
+      "title": "TODO List",
+      "properties": {
+        "todo.defaultPriority": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "default": "medium",
+          "description": "新任务的默认优先级"
+        },
+        "todo.groupBy": {
+          "type": "string",
+          "enum": [
+            "status",
+            "priority",
+            "none"
+          ],
+          "default": "status",
+          "description": "任务分组方式"
+        },
+        "todo.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否自动刷新任务列表"
+        },
+        "todo.confirmDelete": {
+          "type": "boolean",
+          "default": true,
+          "description": "删除任务前是否显示确认对话框"
+        },
+        "todo.showCompletedTasks": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否显示已完成的任务"
+        },
+        "todo.dateFormat": {
+          "type": "string",
+          "default": "YYYY-MM-DD",
+          "description": "日期显示格式"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/uuid": "^10.0.0",
+    "@types/vscode": "^1.75.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "@vscode/test-electron": "^2.3.0",
+    "eslint": "^8.39.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
+}
