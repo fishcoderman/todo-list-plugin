@@ -3,6 +3,7 @@ import { StorageManager } from './services/StorageManager';
 import { TodoService } from './services/TodoService';
 import { TodoTreeDataProvider } from './views/TodoTreeDataProvider';
 import { TodoWebviewProvider } from './views/TodoWebviewProvider';
+import { TodoWebviewViewProvider } from './views/TodoWebviewView';
 import { TodoCommands } from './commands/TodoCommands';
 
 /**
@@ -11,7 +12,7 @@ import { TodoCommands } from './commands/TodoCommands';
  */
 export async function activate(context: vscode.ExtensionContext) {
     console.log('TODO List Plugin is now active!');
-
+    
     try {
         // 初始化存储管理器
         const storageManager = new StorageManager(context);
@@ -33,6 +34,12 @@ export async function activate(context: vscode.ExtensionContext) {
 
         // 创建 Webview 提供者
         const webviewProvider = new TodoWebviewProvider(context, todoService);
+
+        // 注册 WebviewView 提供者（带搜索框的自定义视图）
+        const webviewViewProvider = new TodoWebviewViewProvider(context.extensionUri, todoService);
+        context.subscriptions.push(
+            vscode.window.registerWebviewViewProvider('todoWebviewView', webviewViewProvider)
+        );
 
         // 创建并注册命令处理器
         const commands = new TodoCommands(todoService, treeDataProvider, webviewProvider);

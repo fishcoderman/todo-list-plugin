@@ -33,6 +33,11 @@
     "views": {
       "todo-container": [
         {
+          "type": "webview",
+          "id": "todoWebviewView",
+          "name": "搜索视图"
+        },
+        {
           "id": "todoTreeView",
           "name": "Tasks"
         }
